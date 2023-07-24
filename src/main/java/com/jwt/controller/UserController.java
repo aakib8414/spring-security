@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -30,6 +31,7 @@ public class UserController {
     @GetMapping("/{name}")
     public User getUser(@PathVariable("name") String userName) {
         System.out.println("getting user by name: "+userName);
+        System.out.println("getting user by name: "+userService.getUserByPassword("aakib"));
         return userService.getUser(userName);
     }
 

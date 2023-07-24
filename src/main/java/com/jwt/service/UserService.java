@@ -4,11 +4,15 @@ import com.jwt.model.User;
 import com.jwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.xml.ws.soap.Addressing;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -40,5 +44,10 @@ public class UserService {
         User usr = repository.save(user);
         return usr;
     }
-
+   public User getUserByPassword(String password){
+       Optional<User> user = this.repository.findUserByPassword(password);
+       if(user.isPresent())
+           return user.get();
+       else return new User(" ","Not exist for given password: "+password ,"","");
+   }
 }

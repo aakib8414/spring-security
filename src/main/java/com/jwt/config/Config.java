@@ -42,11 +42,11 @@ public class Config extends WebSecurityConfigurerAdapter {
                .anyRequest()
                .authenticated()
                .and()
-            //   .httpBasic();//popup form and don't have logout
-               .formLogin()//form base login and logout
-               .loginPage("/signin")//custom login page
-               .loginProcessingUrl("/dologin")//processing url
-               .defaultSuccessUrl("/users/");
+               .httpBasic();//popup form and don't have logout
+               //.formLogin()//form base login and logout
+              // .loginPage("/signin")//custom login page
+               //.loginProcessingUrl("/dologin")//processing url
+              // .defaultSuccessUrl("/users/");
 
     }
 

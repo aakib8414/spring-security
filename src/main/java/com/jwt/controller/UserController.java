@@ -3,6 +3,7 @@ package com.jwt.controller;
 import com.jwt.model.User;
 import com.jwt.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +18,18 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/")
     public List<User> getAllUser() {
+        System.out.println("Getting all users");
         return userService.getUserList();
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{name}")
     public User getUser(@PathVariable("name") String userName) {
+        System.out.println("getting user by name: "+userName);
         return userService.getUser(userName);
     }
 

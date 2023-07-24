@@ -18,6 +18,8 @@ public class UserService {
 
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
     List<User> userList = new ArrayList<>();
 
     public UserService() {
@@ -44,10 +46,14 @@ public class UserService {
         User usr = repository.save(user);
         return usr;
     }
-   public User getUserByPassword(String password){
-       Optional<User> user = this.repository.findUserByPassword(password);
-       if(user.isPresent())
-           return user.get();
-       else return new User(" ","Not exist for given password: "+password ,"","");
-   }
+
+    public User updateUser(User user,String name){
+
+        User u = this.repository.findUserByUserName(name)
+                .orElseThrow(() -> new UsernameNotFoundException("User: " + name));
+        u.setPassword(encoder.encode(user.getPassword()));
+        u.setEmail(user.getEmail());
+        u.setRole(user.getRole());
+      return   repository.save(u);
+    }
 }

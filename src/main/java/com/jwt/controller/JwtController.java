@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class JwtController {
 
 
-    @Autowired
+//    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -31,7 +31,10 @@ public class JwtController {
     @Autowired
     private RefreshTokenService tokenService;
 
-    public void set
+    @Autowired
+    public void set(AuthenticationManager manager){
+        authenticationManager=manager;
+    }
 
     @PostMapping("/token")
     public ResponseEntity<?> createToken(@RequestBody JwtRequest request) throws Exception {

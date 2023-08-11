@@ -24,8 +24,8 @@ public class SpringBootHelloWorldApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User u1 = new User("aakib", encoder.encode("aakib"), "abc@gmail.com", "ROLE_USER");
-        User u2 = new User("admin", encoder.encode("admin"), "zxc@gmail.com", "ROLE_ADMIN");
+        User u1 = new User("aakib", encoder.encode("aakib"), "abc@gmail.com", "ROLE_USER",null);
+        User u2 = new User("admin", encoder.encode("admin"), "zxc@gmail.com", "ROLE_ADMIN",null);
         this.userRepository.save(u1);
         this.userRepository.save(u2);
     }

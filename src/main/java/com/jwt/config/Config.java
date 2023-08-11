@@ -57,7 +57,7 @@ public class Config extends WebSecurityConfigurerAdapter {
 //2nd way
         .csrf().disable()
                .authorizeRequests()
-               .antMatchers("/token").permitAll()
+               .antMatchers("/token","/signin","/refresh").permitAll()
                .antMatchers("/public/**").hasRole("USER")//.permitAll()//home page should be permitted
                .antMatchers("/users/**").hasRole("ADMIN")
                . anyRequest().authenticated().and()

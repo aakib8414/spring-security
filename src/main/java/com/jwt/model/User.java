@@ -1,17 +1,21 @@
 package com.jwt.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 public class User {
    @Id
@@ -19,5 +23,9 @@ public class User {
     String password;
     String email;
     String role;
+
+    @OneToOne(mappedBy = "user")
+    @JsonManagedReference
+    private RefreshToken refreshToken;
 }
 

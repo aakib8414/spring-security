@@ -3,7 +3,11 @@ package com.jwt.controller;
 import com.jwt.helper.JwtUtil;
 import com.jwt.model.JwtRequest;
 import com.jwt.model.JwtResponse;
+import com.jwt.model.RefreshToken;
+import com.jwt.model.User;
+import com.jwt.reuest.RefreshTokenRequest;
 import com.jwt.service.CustomUserDetailService;
+import com.jwt.service.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +28,10 @@ public class JwtController {
     private CustomUserDetailService userDetailService;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private RefreshTokenService tokenService;
+
+    public void set
 
     @PostMapping("/token")
     public ResponseEntity<?> createToken(@RequestBody JwtRequest request) throws Exception {
@@ -37,7 +45,20 @@ public class JwtController {
             throw new Exception("Bad Request");
         }
         UserDetails userDetails = this.userDetailService.loadUserByUsername(request.getUsername());
-        String token= this.jwtUtil.generateToken(userDetails);
-        return  ResponseEntity.ok(new JwtResponse(token));
+        String token = this.jwtUtil.generateToken(userDetails);
+        RefreshToken refreshToken = this.tokenService.createToken(userDetails.getUsername());
+        return ResponseEntity.ok(new JwtResponse(token, userDetails.getUsername(), refreshToken.getRefreshToken()));
+    }
+
+    @PostMapping("/refresh")
+    public JwtResponse refreshJwtToken(@RequestBody RefreshTokenRequest request) throws Exception {
+        RefreshToken refreshToken = this.tokenService.verifyRefreshToken(request.getRefreshToken());
+        User user = refreshToken.getUser();
+        String jwtToken = this.jwtUtil.generateToken(this.userDetailService.loadUserByUsername(user.getUserName()));
+        return JwtResponse.builder()
+                .refreshToken(refreshToken.getRefreshToken())
+                .userName(user.getUserName())
+                .jwttoken(jwtToken)
+                .build();
     }
 }
